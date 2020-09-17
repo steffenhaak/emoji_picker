@@ -3,7 +3,7 @@ library emoji_picker;
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' as f;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
@@ -295,7 +295,7 @@ class _EmojiPickerState extends State<EmojiPicker>
   }
 
   Future<bool> _isEmojiAvailable(String emoji) async {
-    if (!kIsWeb && Platform.isAndroid) {
+    if (!f.kIsWeb && Platform.isAndroid) {
       bool isAvailable;
       try {
         isAvailable =
