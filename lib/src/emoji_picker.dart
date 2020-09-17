@@ -3,6 +3,7 @@ library emoji_picker;
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
@@ -118,8 +119,10 @@ class EmojiPicker extends StatefulWidget {
     this.buttonMode = ButtonMode.MATERIAL,
     //this.unavailableEmojiIcon,
   })  : this.categoryIcons = categoryIcons ?? CategoryIcons(),
-        this.noRecommendationsStyle = noRecommendationsStyle ?? TextStyle(fontSize: 20, color: Colors.black26),
-        this.noRecentsStyle = noRecentsStyle ?? TextStyle(fontSize: 20, color: Colors.black26),
+        this.noRecommendationsStyle = noRecommendationsStyle ??
+            TextStyle(fontSize: 20, color: Colors.black26),
+        this.noRecentsStyle =
+            noRecentsStyle ?? TextStyle(fontSize: 20, color: Colors.black26),
         super(key: key);
 }
 
@@ -130,7 +133,12 @@ class _Recommended {
   final int numSplitEqualKeyword;
   final int numSplitPartialKeyword;
 
-  _Recommended({this.name, this.emoji, this.tier, this.numSplitEqualKeyword = 0, this.numSplitPartialKeyword = 0});
+  _Recommended(
+      {this.name,
+      this.emoji,
+      this.tier,
+      this.numSplitEqualKeyword = 0,
+      this.numSplitPartialKeyword = 0});
 }
 
 /// A class to store data for each individual emoji
@@ -151,7 +159,8 @@ class Emoji {
   }
 }
 
-class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStateMixin {
+class _EmojiPickerState extends State<EmojiPicker>
+    with SingleTickerProviderStateMixin {
   static const platform = const MethodChannel("emoji_picker");
 
   int recommendedPagesNum = 1;
@@ -190,7 +199,8 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
 
     if (selectedCategory == null) {
       selectedCategory = Category.SMILEYS;
-    } else if (widget.recommendKeywords == null && selectedCategory == Category.RECOMMENDED) {
+    } else if (widget.recommendKeywords == null &&
+        selectedCategory == Category.RECOMMENDED) {
       selectedCategory = Category.SMILEYS;
     }
 
@@ -254,11 +264,13 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
     ]);
 
     if (_categoryTabController == null) {
-      _categoryTabController = TabController(length: _categoryTabs.length, vsync: this);
+      _categoryTabController =
+          TabController(length: _categoryTabs.length, vsync: this);
     }
     itemPositionsListener.itemPositions.addListener(() {
       if (itemPositionsListener.itemPositions.value.isNotEmpty) {
-        final indexList = itemPositionsListener.itemPositions.value.map((e) => e.index);
+        final indexList =
+            itemPositionsListener.itemPositions.value.map((e) => e.index);
         final maxIndex = indexList.reduce(max);
         final _ = indexList.reduce(min);
 
@@ -283,10 +295,11 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
   }
 
   Future<bool> _isEmojiAvailable(String emoji) async {
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       bool isAvailable;
       try {
-        isAvailable = await platform.invokeMethod("isAvailable", {"emoji": emoji});
+        isAvailable =
+            await platform.invokeMethod("isAvailable", {"emoji": emoji});
       } on PlatformException catch (_) {
         isAvailable = false;
       }
@@ -304,22 +317,20 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
   }
 
   void addRecentEmoji(Emoji emoji) async {
-    if (widget.enableRecent == false) {
-      return;
-    }
-
     final prefs = await SharedPreferences.getInstance();
     final key = "recents";
     getRecentEmojis().then((_) {
       //print("adding emoji");
       recentEmojis.removeWhere((element) => element == emoji.name);
       recentEmojis.insert(0, emoji.name);
+      if (recentEmojis.length == 31) recentEmojis.removeAt(30);
 
       prefs.setStringList(key, recentEmojis);
     });
   }
 
-  Future<Map<String, String>> getAvailableEmojis(Map<String, String> map) async {
+  Future<Map<String, String>> getAvailableEmojis(
+      Map<String, String> map) async {
     Map<String, String> newMap = Map<String, String>();
 
     for (String key in map.keys) {
@@ -377,7 +388,9 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
     allNames.addAll(avalidMap.keys);
     allEmojis.addAll(avalidMap.values);
 
-    var pagesNum = (avalidMap.values.toList().length / (widget.rows * widget.columns)).ceil();
+    var pagesNum =
+        (avalidMap.values.toList().length / (widget.rows * widget.columns))
+            .ceil();
 
     List<Widget> avalidPages = [];
     items(avalidPages);
@@ -397,14 +410,19 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
 
         recommends.forEach((keyword) {
           if (name.toLowerCase() == keyword.toLowerCase()) {
-            recommendedEmojis.add(_Recommended(name: name, emoji: allEmojis[allNames.indexOf(name)], tier: 1));
+            recommendedEmojis.add(_Recommended(
+                name: name, emoji: allEmojis[allNames.indexOf(name)], tier: 1));
           } else {
             List<String> splitName = name.split(" ");
 
             splitName.forEach((splitName) {
-              if (splitName.replaceAll(":", "").toLowerCase() == keyword.toLowerCase()) {
+              if (splitName.replaceAll(":", "").toLowerCase() ==
+                  keyword.toLowerCase()) {
                 numSplitEqualKeyword += 1;
-              } else if (splitName.replaceAll(":", "").toLowerCase().contains(keyword.toLowerCase())) {
+              } else if (splitName
+                  .replaceAll(":", "")
+                  .toLowerCase()
+                  .contains(keyword.toLowerCase())) {
                 numSplitPartialKeyword += 1;
               }
             });
@@ -413,7 +431,8 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
 
         if (numSplitEqualKeyword > 0) {
           if (numSplitEqualKeyword == name.split(" ").length) {
-            recommendedEmojis.add(_Recommended(name: name, emoji: allEmojis[allNames.indexOf(name)], tier: 1));
+            recommendedEmojis.add(_Recommended(
+                name: name, emoji: allEmojis[allNames.indexOf(name)], tier: 1));
           } else {
             recommendedEmojis.add(_Recommended(
                 name: name,
@@ -458,7 +477,8 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
               } else {
                 if (a.name.split(" ").length < b.name.split(" ").length) {
                   return -1;
-                } else if (a.name.split(" ").length > b.name.split(" ").length) {
+                } else if (a.name.split(" ").length >
+                    b.name.split(" ").length) {
                   return 1;
                 } else {
                   return 0;
@@ -480,7 +500,8 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
       });
 
       if (recommendedEmojis.length > widget.numRecommended) {
-        recommendedEmojis = recommendedEmojis.getRange(0, widget.numRecommended).toList();
+        recommendedEmojis =
+            recommendedEmojis.getRange(0, widget.numRecommended).toList();
       }
       if (searchResult != null) {
         searchResult(recommendedEmojis);
@@ -508,9 +529,9 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
       smileyPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(smileyMap, name: "emoji_smile"));
-    if( mounted ){
+    if (mounted) {
       setState(() {});
-    }else{
+    } else {
       return;
     }
 
@@ -518,9 +539,9 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
       animalPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(animalMap, name: "emoji_animal"));
-    if( mounted ){
+    if (mounted) {
       setState(() {});
-    }else{
+    } else {
       return;
     }
 
@@ -528,9 +549,9 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
       foodPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(foodMap, name: "emoji_food"));
-    if( mounted ){
+    if (mounted) {
       setState(() {});
-    }else{
+    } else {
       return;
     }
 
@@ -538,9 +559,9 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
       travelPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(travelMap, name: "emoji_travel"));
-    if( mounted ){
+    if (mounted) {
       setState(() {});
-    }else{
+    } else {
       return;
     }
 
@@ -548,9 +569,9 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
       activityPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(activityMap, name: "emoji_activity"));
-    if( mounted ){
+    if (mounted) {
       setState(() {});
-    }else{
+    } else {
       return;
     }
 
@@ -558,9 +579,9 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
       objectPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(objectMap, name: "emoji_object"));
-    if( mounted ){
+    if (mounted) {
       setState(() {});
-    }else{
+    } else {
       return;
     }
 
@@ -568,9 +589,9 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
       symbolPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(symbolMap, name: "emoji_symbol"));
-    if( mounted ){
+    if (mounted) {
       setState(() {});
-    }else{
+    } else {
       return;
     }
 
@@ -578,9 +599,9 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
       flagPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(flagMap, name: "emojy_flag"));
-    if( mounted ){
+    if (mounted) {
       setState(() {});
-    }else{
+    } else {
       return;
     }
   }
@@ -625,7 +646,10 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
                 return _emojiIcon(emojiTxt, () {
                   String emojiName = recentEmojis[index];
                   widget.onEmojiSelected(
-                      Emoji(name: emojiName, emoji: allEmojis[allNames.indexOf(emojiName)]), selectedCategory);
+                      Emoji(
+                          name: emojiName,
+                          emoji: allEmojis[allNames.indexOf(emojiName)]),
+                      selectedCategory);
                 });
               } else {
                 return Container();
@@ -645,8 +669,10 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
 
   Widget defaultButton(CategoryIcon categoryIcon) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
-      height: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+      width: MediaQuery.of(context).size.width /
+          (widget.recommendKeywords == null ? 9 : 10),
+      height: MediaQuery.of(context).size.width /
+          (widget.recommendKeywords == null ? 9 : 10),
       child: Container(
         color: widget.bgColor,
         child: Center(
@@ -668,10 +694,21 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
       Category.RECENT: recommendedPagesNum,
       Category.SMILEYS: recentPagesNum + recommendedPagesNum,
       Category.ANIMALS: smileyPagesNum + recentPagesNum + recommendedPagesNum,
-      Category.FOODS: smileyPagesNum + animalPagesNum + recentPagesNum + recommendedPagesNum,
-      Category.TRAVEL: smileyPagesNum + animalPagesNum + foodPagesNum + recentPagesNum + recommendedPagesNum,
-      Category.ACTIVITIES:
-          smileyPagesNum + animalPagesNum + foodPagesNum + travelPagesNum + recentPagesNum + recommendedPagesNum,
+      Category.FOODS: smileyPagesNum +
+          animalPagesNum +
+          recentPagesNum +
+          recommendedPagesNum,
+      Category.TRAVEL: smileyPagesNum +
+          animalPagesNum +
+          foodPagesNum +
+          recentPagesNum +
+          recommendedPagesNum,
+      Category.ACTIVITIES: smileyPagesNum +
+          animalPagesNum +
+          foodPagesNum +
+          travelPagesNum +
+          recentPagesNum +
+          recommendedPagesNum,
       Category.OBJECTS: smileyPagesNum +
           animalPagesNum +
           foodPagesNum +
@@ -709,7 +746,8 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
     if (selectedCategory == Category.RECOMMENDED) {
       // search / recommended
       Widget ret;
-      _getRecommentPages(widget.recommendKeywords.value, searchResult: (recommendedEmojis) {
+      _getRecommentPages(widget.recommendKeywords.value,
+          searchResult: (recommendedEmojis) {
         final emojiMap = <String, String>{};
         for (var obj in recommendedEmojis) {
           emojiMap[obj.name] = obj.emoji;
@@ -723,12 +761,13 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
 
     return ScrollablePositionedList.builder(
       key: Key("emoji_main"),
-      initialScrollIndex: max(0,pendingScrollIndex),
+      initialScrollIndex: max(0, pendingScrollIndex),
       itemCount: scrollableItems.length,
       itemScrollController: scrollListController,
       itemPositionsListener: itemPositionsListener,
       itemBuilder: (context, index) {
-        if ([Category.RECENT, Category.RECOMMENDED].contains(_categoryList[index])) {
+        if ([Category.RECENT, Category.RECOMMENDED]
+            .contains(_categoryList[index])) {
           return Container();
         }
         return Container(
@@ -753,7 +792,7 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
           ),
         );
       },
-    );    
+    );
   }
 
   @override
@@ -799,12 +838,15 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
 
           if (needRefresh) {
             setState(() {});
-            if ([Category.RECENT, Category.RECOMMENDED].contains(oldSelection) &&
-                [Category.RECENT, Category.RECOMMENDED].contains(newCategory) == false) {
+            if ([Category.RECENT, Category.RECOMMENDED]
+                    .contains(oldSelection) &&
+                [Category.RECENT, Category.RECOMMENDED].contains(newCategory) ==
+                    false) {
               pendingScrollIndex = index;
             }
           } else {
-            scrollListController.scrollTo(index: index, duration: Duration(milliseconds: 500));
+            scrollListController.scrollTo(
+                index: index, duration: Duration(milliseconds: 500));
           }
         }
       },
@@ -816,7 +858,8 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
     return Column(
       children: <Widget>[
         SizedBox(
-          height: (MediaQuery.of(context).size.width / widget.columns) * widget.rows,
+          height: (MediaQuery.of(context).size.width / widget.columns) *
+              widget.rows,
           width: MediaQuery.of(context).size.width,
           child: Container(
             color: widget.bgColor,
