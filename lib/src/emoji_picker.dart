@@ -760,7 +760,6 @@ class _EmojiPickerState extends State<EmojiPicker>
     }
 
     return ScrollablePositionedList.builder(
-      key: Key("emoji_main"),
       initialScrollIndex: max(0, pendingScrollIndex),
       itemCount: scrollableItems.length,
       itemScrollController: scrollListController,
@@ -770,27 +769,7 @@ class _EmojiPickerState extends State<EmojiPicker>
             .contains(_categoryList[index])) {
           return Container();
         }
-        return Container(
-          color: widget.bgColor,
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Divider(color: Colors.grey),
-                  ),
-                  Icon(
-                    widget.categoryIcons[_categoryList[index]].icon,
-                    color: Colors.white,
-                  ),
-                  Expanded(flex: 8, child: Divider(color: Colors.grey)),
-                ],
-              ),
-              scrollableItems[index],
-            ],
-          ),
-        );
+        return  scrollableItems[index];
       },
     );
   }
