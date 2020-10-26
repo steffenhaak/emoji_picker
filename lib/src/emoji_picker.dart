@@ -97,6 +97,8 @@ class EmojiPicker extends StatefulWidget {
   /// grid factor
   final double gridFactor;
 
+  final List<String> fontFamilyFallback;
+
   EmojiPicker({
     Key key,
     @required this.onEmojiSelected,
@@ -118,6 +120,7 @@ class EmojiPicker extends StatefulWidget {
     CategoryIcons categoryIcons,
     this.buttonMode = ButtonMode.MATERIAL,
     //this.unavailableEmojiIcon,
+    this.fontFamilyFallback,
   })  : this.categoryIcons = categoryIcons ?? CategoryIcons(),
         this.noRecommendationsStyle = noRecommendationsStyle ??
             TextStyle(fontSize: 20, color: Colors.black26),
@@ -351,7 +354,10 @@ class _EmojiPickerState extends State<EmojiPicker>
                 child: Center(
                   child: Text(
                     emojiTxt,
-                    style: TextStyle(fontSize: widget.iconSize),
+                    style: TextStyle(
+                      fontSize: widget.iconSize,
+                      fontFamilyFallback: widget.fontFamilyFallback,
+                    ),                    
                   ),
                 ),
                 onTap: onSelected));
