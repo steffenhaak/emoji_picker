@@ -372,7 +372,10 @@ class _EmojiPickerState extends State<EmojiPicker>
             child: Center(
               child: Text(
                 emojiTxt,
-                style: TextStyle(fontSize: widget.iconSize),
+                style: TextStyle(
+                  fontSize: widget.iconSize,
+                  fontFamilyFallback: widget.fontFamilyFallback,
+                ),
               ),
             ),
             //onPressed: onSelected
