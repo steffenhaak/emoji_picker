@@ -292,7 +292,9 @@ class _EmojiPickerState extends State<EmojiPicker>
       (timer) async {
         //final preNum = recommendedPagesNum;
         //final recommendedPages2 = _getRecommentPages(widget.recommendKeywords.value);
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       },
     );
   }
