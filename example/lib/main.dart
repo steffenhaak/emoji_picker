@@ -84,16 +84,11 @@ class MainPageState extends State<MainPage> {
             columns: 7,
             iconSize: 20,
             gridFactor: 1.5,
-            bgColor: Colors.black,
-            indicatorColor: Colors.white,
-            buttonMode: ButtonMode.CUPERTINO,
-            recommendKeywords: recommendList,
-            numRecommended: 10,
             categoryIcons: CategoryIcons(
-              recommendationIcon: CategoryIcon(
-                icon: Icons.search,
-                selectedColor: colorGold,
-              ),
+              // recommendationIcon: CategoryIcon(
+              //   icon: Icons.search,
+              //   selectedColor: colorGold,
+              // ),
               recentIcon: CategoryIcon(
                 icon: Icons.access_time,
                 selectedColor: colorGold,
@@ -131,9 +126,7 @@ class MainPageState extends State<MainPage> {
                 selectedColor: colorGold,
               ),
             ),
-            enableRecommend: true,
-            enableRecent: true,
-            onEmojiSelected: (emoji, category) {
+            onEmojiSelected: (emoji) {
               var txtOrg = textController.value.text;
               String txt;
               var selection = textController.value.selection;
@@ -143,7 +136,8 @@ class MainPageState extends State<MainPage> {
                 final cursorPos = txt.length;
                 txt += txtOrg.substring(selection.end, txtOrg.length);
                 textController.text = txt;
-                textController.selection = TextSelection.fromPosition(TextPosition(offset: cursorPos));
+                textController.selection =
+                    TextSelection.fromPosition(TextPosition(offset: cursorPos));
               } else {
                 textController.text = textController.text + emoji.emoji;
               }
