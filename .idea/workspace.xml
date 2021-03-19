@@ -2,7 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c1533d1f-375f-46a2-b979-7f368916f506" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/jeffg/emoji_picker/EmojiPickerPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/jeffg/emoji_picker/EmojiPickerPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Flutter/Debug.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Flutter/Debug.xcconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Flutter/Generated.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Flutter/Generated.xcconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Flutter/Release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Flutter/Release.xcconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Flutter/flutter_export_environment.sh" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Flutter/flutter_export_environment.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/generated_plugin_registrant.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/generated_plugin_registrant.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/emoji_picker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/emoji_picker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/category_icon.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/category_icon.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/emoji_picker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/emoji_picker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,22 +62,22 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1375" height="406" key="GridCell.Tab.0.bottom" timestamp="1613325638053">
+    <state width="832" height="406" key="GridCell.Tab.0.bottom" timestamp="1613318379000">
       <screen x="0" y="25" width="5120" height="1415" />
     </state>
-    <state width="1375" height="406" key="GridCell.Tab.0.bottom/0.25.5120.1415/5120.340.1680.1025@0.25.5120.1415" timestamp="1613325638053" />
-    <state width="1375" height="406" key="GridCell.Tab.0.center" timestamp="1613325638052">
+    <state width="832" height="406" key="GridCell.Tab.0.bottom/0.25.5120.1415/5120.340.1680.1025@0.25.5120.1415" timestamp="1613318379000" />
+    <state width="832" height="406" key="GridCell.Tab.0.center" timestamp="1613318378999">
       <screen x="0" y="25" width="5120" height="1415" />
     </state>
-    <state width="1375" height="406" key="GridCell.Tab.0.center/0.25.5120.1415/5120.340.1680.1025@0.25.5120.1415" timestamp="1613325638052" />
-    <state width="1375" height="406" key="GridCell.Tab.0.left" timestamp="1613325638051">
+    <state width="832" height="406" key="GridCell.Tab.0.center/0.25.5120.1415/5120.340.1680.1025@0.25.5120.1415" timestamp="1613318378999" />
+    <state width="832" height="406" key="GridCell.Tab.0.left" timestamp="1613318378999">
       <screen x="0" y="25" width="5120" height="1415" />
     </state>
-    <state width="1375" height="406" key="GridCell.Tab.0.left/0.25.5120.1415/5120.340.1680.1025@0.25.5120.1415" timestamp="1613325638051" />
-    <state width="1375" height="406" key="GridCell.Tab.0.right" timestamp="1613325638052">
+    <state width="832" height="406" key="GridCell.Tab.0.left/0.25.5120.1415/5120.340.1680.1025@0.25.5120.1415" timestamp="1613318378999" />
+    <state width="832" height="406" key="GridCell.Tab.0.right" timestamp="1613318378999">
       <screen x="0" y="25" width="5120" height="1415" />
     </state>
-    <state width="1375" height="406" key="GridCell.Tab.0.right/0.25.5120.1415/5120.340.1680.1025@0.25.5120.1415" timestamp="1613325638052" />
+    <state width="832" height="406" key="GridCell.Tab.0.right/0.25.5120.1415/5120.340.1680.1025@0.25.5120.1415" timestamp="1613318378999" />
     <state x="2197" y="498" key="MultipleFileMergeDialog" timestamp="1613318373850">
       <screen x="0" y="25" width="5120" height="1415" />
     </state>
