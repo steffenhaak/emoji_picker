@@ -238,8 +238,6 @@ class _EmojiPickerState extends State<EmojiPicker>
             emojiChar,
             style: TextStyle(
               fontSize: widget.iconSize,
-              fontFamily: kIsWeb ? 'NotoColorEmoji' : null,
-              fontFamilyFallback: widget.fontFamilyFallback,
             ),
           ),
         ),
