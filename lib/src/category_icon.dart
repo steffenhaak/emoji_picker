@@ -23,12 +23,12 @@ class CategoryIcon {
   IconData icon;
 
   /// The default color of the icon
-  Color color;
+  Color? color;
 
   /// The color of the icon once the category is selected
-  Color selectedColor;
+  Color? selectedColor;
 
-  CategoryIcon({@required this.icon, this.color, this.selectedColor}) {
+  CategoryIcon({required this.icon, this.color, this.selectedColor}) {
     if (this.color == null) {
       this.color = Color.fromRGBO(211, 211, 211, 1);
     }
@@ -73,19 +73,19 @@ class CategoryIcons {
   /// Icon for [Category.FLAGS]
   final CategoryIcon flagIcon;
 
-  Map<Category, CategoryIcon> _categoryIconMap = {};
+  Map<Category, CategoryIcon?> _categoryIconMap = {};
 
   CategoryIcons({
     // CategoryIcon recommendationIcon,
-    CategoryIcon recentIcon,
-    CategoryIcon smileyIcon,
-    CategoryIcon animalIcon,
-    CategoryIcon foodIcon,
-    CategoryIcon travelIcon,
-    CategoryIcon activityIcon,
-    CategoryIcon objectIcon,
-    CategoryIcon symbolIcon,
-    CategoryIcon flagIcon,
+    CategoryIcon? recentIcon,
+    CategoryIcon? smileyIcon,
+    CategoryIcon? animalIcon,
+    CategoryIcon? foodIcon,
+    CategoryIcon? travelIcon,
+    CategoryIcon? activityIcon,
+    CategoryIcon? objectIcon,
+    CategoryIcon? symbolIcon,
+    CategoryIcon? flagIcon,
   })  :
         // this.recommendationIcon =
         //     recommendationIcon ?? CategoryIcon(icon: Icons.search),
@@ -112,7 +112,7 @@ class CategoryIcons {
           Category.FLAGS: flagIcon
         };
 
-  CategoryIcon operator [](Category category) {
+  CategoryIcon? operator [](Category category) {
     return _categoryIconMap[category];
   }
 }

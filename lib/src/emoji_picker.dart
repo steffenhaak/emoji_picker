@@ -55,7 +55,7 @@ class EmojiPicker extends StatefulWidget {
   final OnEmojiSelected onEmojiSelected;
 
   /// The background color of the keyboard
-  final Color bgColor;
+  final Color? bgColor;
 
   /// The color of the keyboard page indicator
   final Color indicatorColor;
@@ -77,11 +77,11 @@ class EmojiPicker extends StatefulWidget {
   /// grid factor
   final double gridFactor;
 
-  final List<String> fontFamilyFallback;
+  final List<String>? fontFamilyFallback;
 
   EmojiPicker({
-    Key key,
-    @required this.onEmojiSelected,
+    Key? key,
+    required this.onEmojiSelected,
     this.columns = 7,
     this.rows = 3,
     this.gridFactor = 1.3,
@@ -90,8 +90,8 @@ class EmojiPicker extends StatefulWidget {
     this.indicatorColor = Colors.blue,
     this.progressIndicatorColor = Colors.blue,
     this.noRecentsText = 'Keine kürzliche benutzten',
-    TextStyle noRecentsStyle,
-    CategoryIcons categoryIcons,
+    TextStyle? noRecentsStyle,
+    CategoryIcons? categoryIcons,
     this.fontFamilyFallback,
   })  : this.categoryIcons = categoryIcons ?? CategoryIcons(),
         this.noRecentsStyle =
@@ -102,14 +102,14 @@ class EmojiPicker extends StatefulWidget {
 /// A class to store data for each individual emoji
 class Emoji extends Equatable {
   /// The name or description for this emoji
-  final String name;
+  final String? name;
 
   /// The unicode string for this emoji
   ///
   /// This is the string that should be displayed to view the emoji
-  final String emoji;
+  final String? emoji;
 
-  Emoji({@required this.name, @required this.emoji});
+  Emoji({required this.name, required this.emoji});
 
   String toJsonString() => json.encode({'n': name, 'e': emoji});
 
@@ -120,11 +120,11 @@ class Emoji extends Equatable {
 
   @override
   String toString() {
-    return 'Name: ' + name + ', Emoji: ' + emoji;
+    return 'Name: ' + name! + ', Emoji: ' + emoji!;
   }
 
   @override
-  List<Object> get props => [name, emoji];
+  List<Object?> get props => [name, emoji];
 }
 
 class _EmojiPickerState extends State<EmojiPicker>
@@ -136,9 +136,9 @@ class _EmojiPickerState extends State<EmojiPicker>
   ItemScrollController scrollListController = ItemScrollController();
   ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
 
-  TabController _categoryTabController;
+  TabController? _categoryTabController;
 
-  Map<Category, Map<String, String>> _cacheMap = Map();
+  Map<Category?, Map<String, String>?> _cacheMap = Map();
 
   @override
   void initState() {
@@ -154,7 +154,7 @@ class _EmojiPickerState extends State<EmojiPicker>
 
   @override
   void dispose() {
-    _categoryTabController.dispose();
+    _categoryTabController!.dispose();
     super.dispose();
   }
 
@@ -170,21 +170,21 @@ class _EmojiPickerState extends State<EmojiPicker>
         //final maxIndex = indexList.reduce(max);
         final minIndex = indexList.reduce(min);
 
-        _categoryTabController.animateTo(minIndex);
+        _categoryTabController!.animateTo(minIndex);
       }
     });
   }
 
-  Future<Map<String, String>> _getFiltered(Map<String, String> emoji) async {
+  Future<Map<String, String>?> _getFiltered(Map<String, String>? emoji) async {
     if (!Platform.isAndroid) {
       debugPrint('This function should only be called on platform Android!');
       return emoji;
     }
     try {
-      Map<dynamic, dynamic> temp =
+      Map<dynamic, dynamic>? temp =
           await _platform.invokeMethod('checkAvailability', {'emoji': emoji});
-      final Map<String, String> copy = Map.from(emoji);
-      copy.removeWhere((key, _) => !temp.containsKey(key));
+      final Map<String, String> copy = Map.from(emoji!);
+      copy.removeWhere((key, _) => !temp!.containsKey(key));
       debugPrint(
           'copy contains ${copy.length} emojis out of ${emoji.length} original emojis.');
       return copy;
@@ -200,7 +200,7 @@ class _EmojiPickerState extends State<EmojiPicker>
     return prefs
             .getStringList(kRecentEmojisKey)
             ?.map<Emoji>(Emoji.fromJsonString)
-            ?.toList() ??
+            .toList() ??
         [];
   }
 
@@ -209,13 +209,13 @@ class _EmojiPickerState extends State<EmojiPicker>
     _recentEmojis.removeWhere((element) => element == emoji);
     _recentEmojis.insert(0, emoji);
     if (_recentEmojis.length > 30) {
-      _recentEmojis = _recentEmojis.take(30);
+      _recentEmojis = _recentEmojis.take(30) as List<Emoji>;
     }
     prefs.setStringList(kRecentEmojisKey,
         _recentEmojis.map((e) => e.toJsonString()).toList(growable: false));
   }
 
-  Future<Map<String, String>> _getAvailableEmojis(Category category) async {
+  Future<Map<String, String>?> _getAvailableEmojis(Category category) async {
     if (kIsWeb || !Platform.isAndroid) return _emojiMapForCategory(category);
     final cachedMap = _cacheMap[category];
     if (cachedMap != null) {
@@ -226,7 +226,7 @@ class _EmojiPickerState extends State<EmojiPicker>
     return newCachedMap;
   }
 
-  Widget _emojiIcon(String emojiChar, Function onSelected) {
+  Widget _emojiIcon(String emojiChar, VoidCallback onSelected) {
     return Center(
         child: GestureDetector(
       onTap: onSelected,
@@ -246,17 +246,17 @@ class _EmojiPickerState extends State<EmojiPicker>
   }
 
   Widget _buildCategory(Category category) {
-    return FutureBuilder<Map<String, String>>(
+    return FutureBuilder<Map<String, String>?>(
         future: _getAvailableEmojis(category),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return _gridCategory(snapshot.data, category);
+            return _gridCategory(snapshot.data!, category);
           }
-          return _gridCategory(_emojiMapForCategory(category), category);
+          return _gridCategory(_emojiMapForCategory(category)!, category);
         });
   }
 
-  Map<String, String> _emojiMapForCategory(Category category) {
+  Map<String, String>? _emojiMapForCategory(Category category) {
     switch (category) {
       case Category.RECENT:
         return null;
@@ -277,10 +277,9 @@ class _EmojiPickerState extends State<EmojiPicker>
       case Category.FLAGS:
         return emojiList.flags;
     }
-    return null;
   }
 
-  Widget _gridCategory(Map<String, String> itemMap, Category category) {
+  Widget _gridCategory(Map<String, String> itemMap, Category? category) {
     return Container(
       key: Key(category.toString()),
       child: Column(
@@ -315,7 +314,7 @@ class _EmojiPickerState extends State<EmojiPicker>
           primary: true,
           crossAxisCount: widget.columns,
           children: _recentEmojis
-              .map((emoji) => _emojiIcon(emoji.emoji, () {
+              .map((emoji) => _emojiIcon(emoji.emoji!, () {
                     widget.onEmojiSelected(
                       emoji,
                     );
@@ -372,7 +371,7 @@ class _EmojiPickerState extends State<EmojiPicker>
         debugPrint('Building category $category for index $index');
         return Column(
           children: [
-            _buildCategory(category),
+            _buildCategory(category!),
             if (index < 9) Divider(),
           ],
         );
