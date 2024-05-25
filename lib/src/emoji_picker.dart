@@ -328,7 +328,7 @@ class _EmojiPickerState extends State<EmojiPicker>
         padding: const EdgeInsets.all(16.0),
         child: Text(
           widget.noRecentsText,
-          style: Theme.of(context).textTheme.caption,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
       ));
     }
