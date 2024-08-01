@@ -209,7 +209,7 @@ class _EmojiPickerState extends State<EmojiPicker>
     _recentEmojis.removeWhere((element) => element == emoji);
     _recentEmojis.insert(0, emoji);
     if (_recentEmojis.length > 30) {
-      _recentEmojis = _recentEmojis.take(30) as List<Emoji>;
+      _recentEmojis = _recentEmojis.take(30).toList();
     }
     prefs.setStringList(kRecentEmojisKey,
         _recentEmojis.map((e) => e.toJsonString()).toList(growable: false));
