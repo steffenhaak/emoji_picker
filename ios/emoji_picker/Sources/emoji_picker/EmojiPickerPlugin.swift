@@ -1,10 +1,10 @@
 import Flutter
 import UIKit
 
-public class SwiftEmojiPickerPlugin: NSObject, FlutterPlugin {
+public class EmojiPickerPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "emoji_picker", binaryMessenger: registrar.messenger())
-    let instance = SwiftEmojiPickerPlugin()
+    let instance = EmojiPickerPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 
